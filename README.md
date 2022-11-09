@@ -1,3 +1,4 @@
+```
 wget https://releases.hashicorp.com/nomad/1.4.2/nomad_1.4.2_linux_amd64.zip
 unzip nomad_1.4.2_linux_amd64.zip
 
@@ -101,4 +102,4 @@ args = ["/etc/os-release"]
 
 }
 }
-
+```

@@ -7,7 +7,8 @@ unzip nomad_1.4.2_linux_amd64.zip
 
 На клиенте:
 ./nomad agent -config=client.hcl
-
+либо (если нет бинарника ip)
+./nomad agent -config=/config/client.hcl -network-interface=eth0
 
 Клиент в непревилегированном режиме:
 docker run -it --rm --user 1001:1001 debian:9

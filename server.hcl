@@ -11,6 +11,10 @@ advertise {
   serf = "172.30.1.2"
 }
 
+limits {
+  http_max_conns_per_client = 0
+}
+
 # Enable server on nomad1
 server {
   enabled = true

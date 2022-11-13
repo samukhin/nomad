@@ -94,10 +94,14 @@ count = 5
 
 task "example" {
 driver = "raw_exec"
+resources {
+cpu    = 100
+memory = 256
+}
 
 config {
-command = "cat"
-args = ["/etc/os-release"]
+command = "sleep"
+args = ["infinity"]
 }
 }
 

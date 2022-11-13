@@ -11,6 +11,10 @@ advertise {
   serf = "172.30.1.2"
 }
 
+acl {
+  enabled = true
+}
+
 limits {
   http_max_conns_per_client = 0
 }

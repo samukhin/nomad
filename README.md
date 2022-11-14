@@ -92,6 +92,12 @@ type = "service"
 group "example" {
 count = 5
 
+ephemeral_disk {
+migrate = true
+size    = 500
+sticky  = true
+}
+
 task "example" {
 driver = "raw_exec"
 resources {

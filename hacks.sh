@@ -23,7 +23,7 @@ nomad alloc exec -i -t=false -task=promtail 0d253bda /usr/bin/socat - TCP4:local
 echo 'ok' | nomad alloc exec f7a /bin/sh -c 'cat > ${NOMAD_TASK_DIR}/myfile.txt'
 
 
-socat TCP-LISTEN:8080,fork,reuseaddr EXEC:"bash -e ./route_handler.sh 'nomad alloc exec -address https://...com  -task example ee0b1fe6 socat - TCP4:localhost:22'"
+socat TCP-LISTEN:8080,fork,reuseaddr EXEC:"bash -e ./route_handler.sh 'nomad alloc exec -address https://..4646.com  -task example ee0b1fe6 socat - TCP4:localhost:22'"
 
 Sergey-PC:~# cat route_handler.sh
 tee >(socat - TCP4:127.0.0.1:8001 >> /dev/null) | "$@"

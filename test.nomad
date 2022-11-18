@@ -14,7 +14,7 @@ static = 8000
 task "example" {
 
 artifact {
-source      = "https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-minirootfs-3.14.8-x86_64.tar.gz"
+source      = "http://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-minirootfs-3.14.8-x86_64.tar.gz"
 destination = "local/rootfs"
 options {
 archive = false
@@ -35,10 +35,10 @@ args = ["-c",
         cp local/rootfs/alpine-minirootfs-3.14.8-x86_64.tar.gz $NOMAD_ALLOC_DIR/;
         cd $NOMAD_ALLOC_DIR/; tar xf alpine-minirootfs-3.14.8-x86_64.tar.gz;
         cp /etc/resolv.conf etc/resolv.conf;
-        proot -r . -b /proc -b /dev -b /sys apk update;
-        proot -r . -b /proc -b /dev -b /sys apk upgrade;
-        proot -r . -b /proc -b /dev -b /sys apk add python3;
-        python3 -m http.server;
+        proot -r . -b /proc -b /dev -b /sys -i 0 apk update;
+        proot -r . -b /proc -b /dev -b /sys -i 0 apk upgrade;
+        proot -r . -b /proc -b /dev -b /sys -i 0 apk add python3;
+        proot -r . -b /proc -b /dev -b /sys -i 0 python3 -m http.server;
         EOT
        ]
 }

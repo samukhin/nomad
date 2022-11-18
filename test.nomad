@@ -5,6 +5,12 @@ type = "service"
 group "example" {
 count = 1
 
+network {
+port "http" {
+static = 8000
+}
+}
+
 task "example" {
 
 artifact {

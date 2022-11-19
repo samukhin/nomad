@@ -3,7 +3,7 @@ datacenters = ["dc1"]
 type = "service"
 
 group "example" {
-count = 1
+count = 2
 
 network {
 port "http" {
@@ -15,10 +15,30 @@ task "example" {
 
 artifact {
 source      = "http://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-minirootfs-3.14.8-x86_64.tar.gz"
-destination = "local/rootfs"
+destination = "local/"
 options {
 archive = false
 }
+}
+  
+template {
+data = <<EOT
+#!/bin/sh
+set -eux
+cd ${NOMAD_TASK_DIR}/
+rm -rfv rootfs
+mkdir rootfs
+cp alpine-minirootfs-3.14.8-x86_64.tar.gz rootfs/
+cd rootfs
+tar xf alpine-minirootfs-3.14.8-x86_64.tar.gz
+cp /etc/resolv.conf etc/
+proot -r . -b /sys -b /proc -b /dev apk update
+proot -r . -b /sys -b /proc -b /dev apk upgrade
+proot -r . -b /sys -b /proc -b /dev apk add python3
+proot -r . -b /sys -b /proc -b /dev python3 -m http.server
+EOT
+
+destination = "local/script.sh"
 }
 
 driver = "raw_exec"
@@ -30,15 +50,8 @@ config {
 command = "bash"
 args = ["-c", 
         <<EOT
-        set -eux;
-        rm -rfv $NOMAD_ALLOC_DIR/\*;
-        cp local/rootfs/alpine-minirootfs-3.14.8-x86_64.tar.gz $NOMAD_ALLOC_DIR/;
-        cd $NOMAD_ALLOC_DIR/; tar xf alpine-minirootfs-3.14.8-x86_64.tar.gz;
-        cp /etc/resolv.conf etc/resolv.conf;
-        proot -r . -b /proc -b /dev -b /sys -i 0 apk update;
-        proot -r . -b /proc -b /dev -b /sys -i 0 apk upgrade;
-        proot -r . -b /proc -b /dev -b /sys -i 0 apk add python3;
-        proot -r . -b /proc -b /dev -b /sys -i 0 python3 -m http.server;
+        chmod +x local/script.sh
+        ./local/script.sh
         EOT
        ]
 }

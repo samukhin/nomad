@@ -7,12 +7,16 @@ unzip nomad_1.4.2_linux_amd64.zip
 либо
 ./nomad agent -node=server --bind 0.0.0.0 -config=<(echo 'advertise{rpc="127.0.0.1"} limits{http_max_conns_per_client=0} server{enabled=true bootstrap_expect=1}') -data-dir=/tmp/data
 
+bash -c "./nomad agent -node=server --bind 0.0.0.0 -config=<(echo 'advertise{rpc=\"127.0.0.1\"} limits{http_max_conns_per_client=0} server{enabled=true bootstrap_expect=1}') -data-dir=/tmp/data"
+
 На клиенте:
 ./nomad agent -config=client.hcl
 либо (если нет бинарника ip)
 ./nomad agent -config=/config/client.hcl -network-interface=eth0
 либо
 ./nomad agent -node=client -client -data-dir=/tmp/data -servers=["172.30.1.2"] -config=<(echo 'plugin "raw_exec" {config{enabled=true}}')
+
+bash -c "./nomad agent -node=client -client -data-dir=/tmp/data -servers=["172.30.1.2"] -config=<(echo 'plugin \"raw_exec\" {config{enabled=true}}')"
 
 Клиент в непревилегированном режиме:
 docker run -it --rm --user 1001:1001 debian:9

@@ -11,6 +11,12 @@ static = 8000
 }
 }
 
+ephemeral_disk {
+migrate = true
+size    = 500
+sticky  = true
+}
+  
 task "example" {
 
 artifact {
@@ -32,10 +38,10 @@ cp alpine-minirootfs-3.14.8-x86_64.tar.gz rootfs/
 cd rootfs
 tar xf alpine-minirootfs-3.14.8-x86_64.tar.gz
 cp /etc/resolv.conf etc/
-proot -r . -b /sys -b /proc -b /dev apk update
-proot -r . -b /sys -b /proc -b /dev apk upgrade
-proot -r . -b /sys -b /proc -b /dev apk add python3
-proot -r . -b /sys -b /proc -b /dev python3 -m http.server
+proot -r . -b /sys -b /proc -b /dev -i 0:0 apk update
+proot -r . -b /sys -b /proc -b /dev -i 0:0 apk upgrade
+proot -r . -b /sys -b /proc -b /dev -i 0:0 apk add python3
+proot -r . -b /sys -b /proc -b /dev -i 0:0 python3 -m http.server
 EOT
 
 destination = "local/script.sh"

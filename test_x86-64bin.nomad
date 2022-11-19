@@ -11,6 +11,12 @@ static = 8000
 }
 }
 
+service {
+name     = "app"
+provider = "nomad"
+port     = "http"
+}
+
 ephemeral_disk {
 migrate = true
 size    = 500

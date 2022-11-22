@@ -2,6 +2,22 @@
 wget https://releases.hashicorp.com/nomad/1.4.2/nomad_1.4.2_linux_amd64.zip
 unzip nomad_1.4.2_linux_amd64.zip
 
+wget https://releases.hashicorp.com/consul/1.14.1/consul_1.14.1_linux_amd64.zip
+unzip consul_1.14.1_linux_amd64.zip
+
+./consul agent -bind=172.30.1.2 -bootstrap-expect=1 -client=172.30.1.2 -data-dir=/opt/consul -server -ui -config-file=file
+./consul agent  -retry-join=52.10.110.11 ...
+
+consul agent -server=true -retry-join=consul '-bind={{ GetInterfaceIP "eth0" }}' -client=0.0.0.0 -data-dir=/opt/consul -bootstrap-expect=1 -ui
+
+consul_server.hcl:
+connect {
+  enabled = true
+}
+
+./nomad agent -node=server --bind 0.0.0.0 -consul-address=172.30.1.2:8500 -config=<(echo 'limits{http_max_conns_per_client=0} server{enabled=true bootstrap_expect=1}') -data-dir=/opt/nomad/
+./nomad agent -client  -consul-address=172.30.1.2:8500 --bind 0.0.0.0 -data-dir=/tmp/nomad -config=<(echo 'plugin "raw_exec" {config{enabled=true}}')
+
 На сервере:
 ./nomad agent -config=server.hcl
 либо
